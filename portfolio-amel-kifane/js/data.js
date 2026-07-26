@@ -46,14 +46,6 @@ const SiteData = (() => {
         image: "assets/certificates/cert-18-cisco-cybersecurity.png",
       },
       {
-        id: 2,
-        name: "Les Premiers Secours",
-        issuer: "Académie Djoumana",
-        date: "2026",
-        description: "Certified in basic first-aid and emergency response.",
-        image: "assets/certificates/cert-01-djoumana-secours.jpg",
-      },
-      {
         id: 3,
         name: "Describe Cloud Computing",
         issuer: "Microsoft",
