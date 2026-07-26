@@ -24,7 +24,7 @@
     },
     {
       "label": "Certifications",
-      "value": 19,
+      "value": 18,
       "suffix": "+"
     },
     {
@@ -263,14 +263,6 @@
       "date": "2025",
       "description": "Fundamentals of security threats, defenses and best practices.",
       "image": "assets/certificates/cert-18-cisco-cybersecurity.png"
-    },
-    {
-      "id": 2,
-      "name": "Les Premiers Secours (First Aid)",
-      "issuer": "Académie Djoumana",
-      "date": "2026",
-      "description": "Certified in basic first-aid and emergency response.",
-      "image": "assets/certificates/cert-01-djoumana-secours.jpg"
     },
     {
       "id": 3,
