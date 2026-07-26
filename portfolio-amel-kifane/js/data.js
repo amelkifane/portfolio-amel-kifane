@@ -196,12 +196,12 @@ const SiteData = (() => {
   function getDefaultTimeline() {
     return [
       {
-        year: "2021",
+        year: "2022",
         title: "Started Computer Science degree",
         description: "Began my Bachelor's at Tissemsilt University.",
       },
       {
-        year: "2022",
+        year: "2026",
         title: "First freelance project",
         description: "Built a landing page for a local business.",
       },
@@ -212,7 +212,7 @@ const SiteData = (() => {
           "Focused on JavaScript, React, and building interactive UIs.",
       },
       {
-        year: "2024",
+        year: "2025",
         title: "Started AI Master's",
         description: "Began my Master's in Artificial Intelligence.",
       },
@@ -234,13 +234,13 @@ const SiteData = (() => {
       {
         title: "Freelance Web Developer",
         company: "Self-employed",
-        period: "2024 — Present",
+        period: "2026 — Present",
         description: "Building responsive websites and web applications.",
       },
       {
         title: "Student Developer - Web Learning Path",
         company: "Microsoft",
-        period: "2026",
+        period: "2023",
         description: "Completed web development learning path.",
       },
       {
@@ -257,60 +257,60 @@ const SiteData = (() => {
       {
         degree: "Master's in Artificial Intelligence (M2)",
         institution: "University of Tissemsilt, Algeria",
-        period: "2024 — Present",
+        period: "2025 — Present",
       },
       {
         degree: "Bachelor's in Computer Science",
         institution: "University of Tissemsilt, Algeria",
-        period: "2021 — 2025",
+        period: "2022 — 2025",
       },
     ];
   }
 
   function getDefaultSkills() {
     return [
-      { name: "HTML5", icon: "fab fa-html5", color: "#f97316", level: 95 },
-      { name: "CSS3", icon: "fab fa-css3-alt", color: "#3b82f6", level: 92 },
+      { name: "HTML5", icon: "fab fa-html5", color: "#f97316", level: 93 },
+      { name: "CSS3", icon: "fab fa-css3-alt", color: "#3b82f6", level: 90 },
       {
         name: "JavaScript",
         icon: "fab fa-js-square",
         color: "#facc15",
-        level: 88,
+        level: 83,
       },
-      { name: "React", icon: "fab fa-react", color: "#60a5fa", level: 80 },
-      { name: "Node.js", icon: "fab fa-node-js", color: "#4ade80", level: 75 },
-      { name: "MySQL", icon: "fas fa-database", color: "#3b82f6", level: 72 },
+      { name: "React", icon: "fab fa-react", color: "#60a5fa", level: 63 },
+      { name: "Node.js", icon: "fab fa-node-js", color: "#4ade80", level: 63 },
+      { name: "MySQL", icon: "fas fa-database", color: "#3b82f6", level: 77 },
       {
         name: "Tailwind CSS",
         icon: "fas fa-wind",
         color: "#22d3ee",
-        level: 90,
+        level: 61,
       },
       {
         name: "Git & GitHub",
         icon: "fab fa-github",
         color: "#e5e7eb",
-        level: 85,
+        level: 66,
       },
       {
         name: "Responsive Design",
         icon: "fas fa-mobile-alt",
         color: "#4ade80",
-        level: 93,
+        level: 90,
       },
       {
         name: "Web Accessibility",
         icon: "fas fa-universal-access",
         color: "#60a5fa",
-        level: 80,
+        level: 72,
       },
       {
         name: "Cybersecurity",
         icon: "fas fa-shield-alt",
         color: "#34d399",
-        level: 70,
+        level: 57,
       },
-      { name: "TypeScript", icon: "fas fa-code", color: "#a78bfa", level: 60 },
+      { name: "TypeScript", icon: "fas fa-code", color: "#a78bfa", level: 54 },
     ];
   }
 
@@ -318,7 +318,7 @@ const SiteData = (() => {
     return {
       name: "Amel Kifane",
       firstName: "Amel",
-      bio: "I'm a Full Stack Web Developer based in Algeria, currently pursuing a Master's degree in Artificial Intelligence.",
+      bio: "I'm a Frontend Web Developer based in Algeria, currently pursuing a Master's degree in Artificial Intelligence.",
       longBio:
         "My journey in tech started with a curiosity about how websites work — a curiosity that turned into years of hands-on experience.",
       location: "Tissemsilt, Algeria",
@@ -333,8 +333,8 @@ const SiteData = (() => {
   function getDefaultLanguages() {
     return [
       { name: "Arabic", level: "Native", percent: 100 },
-      { name: "French", level: "Fluent", percent: 90 },
-      { name: "English", level: "Intermediate (Technical)", percent: 70 },
+      { name: "French", level: "Intermediate", percent: 65 },
+      { name: "English", level: "Intermediate", percent: 70 },
     ];
   }
 
