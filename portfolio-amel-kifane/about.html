@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About — Amel Kifane</title>
+    <meta
+      name="description"
+      content="Learn more about Amel Kifane — Full Stack Web Developer, AI Master's student."
+    />
+    <meta name="theme-color" content="#0a0a0f" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="preloader"><div class="loader-ring"></div></div>
+    <div id="offlineBanner">
+      <i class="fas fa-wifi mr-2"></i>You're offline — some content may not
+      load.
+    </div>
+    <div id="scrollProgress"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header fixed top-0 w-full z-50">
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <a href="index.html" class="text-2xl font-extrabold"
+          ><span class="gradient-text">Amel Kifane</span></a
+        >
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="nav-link text-sm font-medium">Home</a>
+          <a href="projects.html" class="nav-link text-sm font-medium"
+            >Projects</a
+          >
+          <a href="about.html" class="nav-link text-sm font-medium">About</a>
+          <a href="contact.html" class="nav-link text-sm font-medium"
+            >Contact</a
+          >
+        </div>
+        <div class="flex items-center gap-3">
+          <button
+            onclick="toggleTheme()"
+            class="theme-toggle"
+            aria-label="Toggle dark or light theme"
+          >
+            <i class="fas fa-sun" data-theme-icon></i>
+          </button>
+          <a
+            href="contact.html"
+            class="hidden md:inline-block btn-primary px-5 py-2 rounded-full text-sm font-medium"
+            >Hire Me</a
+          >
+          <button
+            onclick="toggleMobileNav()"
+            class="md:hidden theme-toggle"
+            aria-label="Toggle navigation menu"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+      <div
+        id="mobileNav"
+        class="hidden md:hidden border-t border-white/5 px-6 py-4 flex flex-col gap-4"
+      >
+        <a href="index.html" class="nav-link text-sm font-medium">Home</a>
+        <a href="projects.html" class="nav-link text-sm font-medium"
+          >Projects</a
+        >
+        <a href="about.html" class="nav-link text-sm font-medium">About</a>
+        <a href="contact.html" class="nav-link text-sm font-medium">Contact</a>
+      </div>
+    </header>
+
+    <!-- ===== BIO ===== -->
+    <section class="hero-gradient pt-36 pb-20">
+      <div class="container mx-auto px-6">
+        <div
+          class="max-w-5xl mx-auto grid md:grid-cols-[220px_1fr] gap-10 items-start"
+        >
+          <div class="reveal text-center">
+            <img
+              src="assets/images/profile.png"
+              alt="Portrait of Amel Kifane"
+              class="w-40 h-40 rounded-full object-cover mx-auto border-4 border-blue-400/30 p-1"
+            />
+          </div>
+          <div class="reveal">
+            <span
+              class="text-blue-400 text-sm font-medium uppercase tracking-wider"
+              >About Me</span
+            >
+            <h1 class="text-4xl md:text-5xl font-extrabold mt-2 mb-6">
+              Hi, I'm <span class="gradient-text" id="aboutName">Amel</span>
+            </h1>
+            <p class="text-body leading-relaxed mb-4" id="aboutBioShort"></p>
+            <p class="text-body leading-relaxed" id="aboutBioLong"></p>
+            <div class="flex flex-wrap gap-3 mt-6">
+              <a
+                href="assets/cv-amel-kifane.pdf"
+                target="_blank"
+                class="btn-primary px-6 py-3 rounded-full text-sm font-medium inline-flex items-center gap-2"
+              >
+                <i class="fas fa-eye"></i> View CV
+              </a>
+              <a
+                href="contact.html"
+                class="btn-outline px-6 py-3 rounded-full text-sm font-medium inline-flex items-center gap-2"
+              >
+                <i class="fas fa-paper-plane"></i> Contact Me
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TIMELINE ===== -->
+    <section class="container mx-auto px-6 py-16">
+      <div class="text-center mb-16 reveal">
+        <span class="text-blue-400 text-sm font-medium uppercase tracking-wider"
+          >Journey</span
+        >
+        <h2 class="text-4xl font-bold mt-2">
+          My <span class="gradient-text">Timeline</span>
+        </h2>
+      </div>
+      <div id="timelineContainer" class="relative max-w-2xl mx-auto">
+        <div class="absolute left-4 top-2 bottom-2 w-0.5 timeline-line"></div>
+      </div>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section class="container mx-auto px-6 py-16">
+      <div class="text-center mb-16 reveal">
+        <span
+          class="text-purple-400 text-sm font-medium uppercase tracking-wider"
+          >Career</span
+        >
+        <h2 class="text-4xl font-bold mt-2">
+          Work <span class="gradient-text">Experience</span>
+        </h2>
+      </div>
+      <div id="experienceContainer" class="max-w-3xl mx-auto space-y-6"></div>
+    </section>
+
+    <!-- ===== EDUCATION ===== -->
+    <section class="container mx-auto px-6 py-16">
+      <div class="text-center mb-16 reveal">
+        <span class="text-pink-400 text-sm font-medium uppercase tracking-wider"
+          >Academics</span
+        >
+        <h2 class="text-4xl font-bold mt-2">
+          My <span class="gradient-text">Education</span>
+        </h2>
+      </div>
+      <div id="educationContainer" class="max-w-3xl mx-auto space-y-6"></div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section class="container mx-auto px-6 py-16">
+      <div class="text-center mb-16 reveal">
+        <span class="text-blue-400 text-sm font-medium uppercase tracking-wider"
+          >Expertise</span
+        >
+        <h2 class="text-4xl font-bold mt-2">
+          Skills <span class="gradient-text">Breakdown</span>
+        </h2>
+      </div>
+      <div
+        id="skillsLevelsContainer"
+        class="max-w-3xl mx-auto grid sm:grid-cols-2 gap-x-10 gap-y-6"
+      ></div>
+    </section>
+
+    <!-- ===== CERTIFICATES ===== -->
+    <section class="container mx-auto px-6 py-16">
+      <div class="text-center mb-16 reveal">
+        <span
+          class="text-purple-400 text-sm font-medium uppercase tracking-wider"
+          >Achievements</span
+        >
+        <h2 class="text-4xl font-bold mt-2">
+          My <span class="gradient-text">Certificates</span>
+        </h2>
+      </div>
+      <div
+        id="certificatesContainer"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      ></div>
+    </section>
+
+    <!-- ===== LANGUAGES & HOBBIES ===== -->
+    <section class="container mx-auto px-6 py-16">
+      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10">
+        <div class="reveal">
+          <h3 class="text-2xl font-bold mb-6">
+            <i class="fas fa-language text-blue-400 mr-2"></i>Languages
+          </h3>
+          <div id="languagesContainer" class="space-y-5"></div>
+        </div>
+        <div class="reveal">
+          <h3 class="text-2xl font-bold mb-6">
+            <i class="fas fa-heart text-pink-400 mr-2"></i>Hobbies &amp;
+            Interests
+          </h3>
+          <div id="hobbiesContainer" class="flex flex-wrap gap-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="container mx-auto px-6 py-20">
+      <div
+        class="glass-card rounded-3xl p-12 text-center max-w-4xl mx-auto reveal"
+      >
+        <h3 class="text-3xl font-bold mb-3">
+          Want to work <span class="gradient-text">together?</span>
+        </h3>
+        <p class="text-body mb-8 max-w-lg mx-auto">
+          I'm always open to discussing new projects and opportunities.
+        </p>
+        <a
+          href="contact.html"
+          class="btn-primary px-8 py-4 rounded-full font-medium inline-flex items-center gap-2"
+        >
+          <i class="fas fa-paper-plane"></i> Get in Touch
+        </a>
+      </div>
+    </section>
+    <!-- ===== FOOTER ===== -->
+<footer
+  class="surface border-t py-12"
+  style="border-color: var(--card-border)"
+>
+  <div class="container mx-auto px-6">
+    <!-- Social Icons -->
+    <div class="flex justify-center gap-6 mb-6">
+      <a
+        href="https://www.linkedin.com/in/kifane-amel-1b030137b"
+        target="_blank"
+        rel="noopener"
+        class="social-icon text-muted hover:text-blue-400 text-xl"
+        aria-label="LinkedIn"
+        ><i class="fab fa-linkedin-in"></i
+      ></a>
+      <a
+        href="https://github.com/amelkifane"
+        target="_blank"
+        rel="noopener"
+        class="social-icon text-muted hover:text-white text-xl"
+        aria-label="GitHub"
+        ><i class="fab fa-github"></i
+      ></a>
+      <a
+        href="#"
+        class="social-icon text-muted hover:text-red-400 text-xl"
+        aria-label="Email"
+        onclick="navigator.clipboard.writeText('amelkifane@gmail.com').then(() => {if(typeof showToast === 'function') showToast('📧 Email copied: amelkifane@gmail.com'); else alert('Email: amelkifane@gmail.com');}).catch(() => alert('Email: amelkifane@gmail.com')); return false;"
+        ><i class="fas fa-envelope"></i
+      ></a>
+    </div>
+    <div class="text-center text-sm text-muted">
+      <p>© <span data-year></span> Amel Kifane. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+    <button id="backToTop" onclick="scrollToTop()" aria-label="Back to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+      // ============================================================
+      // RENDER ABOUT PAGE
+      // ============================================================
+      function renderAbout() {
+        var data = SiteData.loadAll();
+
+        // Profile
+        var profile = data.profile || {};
+        document.getElementById("aboutName").textContent =
+          profile.firstName || "Amel";
+        document.getElementById("aboutBioShort").textContent =
+          profile.bio || "";
+        document.getElementById("aboutBioLong").textContent =
+          profile.longBio || "";
+
+        // Timeline
+        var timeline = data.timeline || [];
+        var tlContainer = document.getElementById("timelineContainer");
+        if (tlContainer) {
+          tlContainer.innerHTML = "";
+          var tlLine = document.createElement("div");
+          tlLine.className =
+            "absolute left-4 top-2 bottom-2 w-0.5 timeline-line";
+          tlContainer.appendChild(tlLine);
+          timeline.forEach(function (t) {
+            var div = document.createElement("div");
+            div.className = "relative pl-14 pb-10 reveal";
+            div.innerHTML = `
+                        <div class="absolute left-1.5 top-1 w-5 h-5 rounded-full timeline-dot"></div>
+                        <span class="text-blue-400 text-sm font-bold">${t.year}</span>
+                        <h4 class="text-lg font-semibold mt-1">${t.title}</h4>
+                        <p class="text-body text-sm mt-1">${t.description || ""}</p>
+                    `;
+            tlContainer.appendChild(div);
+          });
+        }
+
+        // Experience
+        var experience = data.experience || [];
+        var expContainer = document.getElementById("experienceContainer");
+        if (expContainer) {
+          expContainer.innerHTML = experience
+            .map(function (e) {
+              return `
+                        <div class="glass-card rounded-2xl p-6 reveal">
+                            <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
+                                <h4 class="text-lg font-bold">${e.title}</h4>
+                                <span class="text-xs text-blue-400 font-medium">${e.period || ""}</span>
+                            </div>
+                            <p class="text-sm text-muted mb-2">${e.company || ""}</p>
+                            <p class="text-body text-sm leading-relaxed">${e.description || ""}</p>
+                        </div>
+                    `;
+            })
+            .join("");
+        }
+
+        // Education
+        var education = data.education || [];
+        var eduContainer = document.getElementById("educationContainer");
+        if (eduContainer) {
+          eduContainer.innerHTML = education
+            .map(function (e) {
+              return `
+                        <div class="glass-card rounded-2xl p-6 reveal flex justify-between items-center gap-4 flex-wrap">
+                            <div>
+                                <h4 class="text-lg font-bold">${e.degree}</h4>
+                                <p class="text-sm text-muted">${e.institution || ""}</p>
+                            </div>
+                            <span class="text-xs text-purple-400 font-medium">${e.period || ""}</span>
+                        </div>
+                    `;
+            })
+            .join("");
+        }
+
+        // Skills
+        var skills = data.skills || [];
+        var skillsContainer = document.getElementById("skillsLevelsContainer");
+        if (skillsContainer) {
+          skillsContainer.innerHTML = skills
+            .map(function (s) {
+              return `
+                        <div class="reveal">
+                            <div class="flex justify-between items-center mb-2 text-sm">
+                                <span class="font-medium"><i class="${s.icon || "fas fa-code"} mr-2" style="color:${s.color || "#60a5fa"}"></i>${s.name}</span>
+                                <span class="text-muted">${s.level || 0}%</span>
+                            </div>
+                            <div class="skill-bar-track"><div class="skill-bar-fill" data-target="${s.level || 0}"></div></div>
+                        </div>
+                    `;
+            })
+            .join("");
+        }
+
+        // Certificates
+        var certificates = data.certificates || [];
+        window.allCerts = certificates;
+        var certContainer = document.getElementById("certificatesContainer");
+        if (certContainer) {
+          certContainer.innerHTML = certificates
+            .map(function (c, idx) {
+              return `
+                        <div class="cert-card rounded-2xl p-5 text-center cursor-pointer group" onclick="openCertLightbox(${idx})">
+                            <div class="rounded-xl overflow-hidden mb-4 border border-white/10 bg-white/5 aspect-[4/3] flex items-center justify-center">
+                                ${c.image ? `<img src="${c.image}" alt="${c.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" />` : `<div class="text-5xl">📜</div>`}
+                            </div>
+                            <h4 class="text-base font-semibold mb-1">${c.name}</h4>
+                            <p class="text-muted text-xs mb-2">${c.issuer || ""} ${c.date ? "· " + c.date : ""}</p>
+                            ${c.description ? `<p class="text-muted text-xs leading-relaxed">${c.description}</p>` : ""}
+                            <span class="inline-flex items-center gap-1 text-blue-400 text-xs font-medium mt-3">
+                                <i class="fas fa-eye"></i> View certificate
+                            </span>
+                        </div>
+                    `;
+            })
+            .join("");
+        }
+
+        // Languages
+        var languages = data.languages || [];
+        var langContainer = document.getElementById("languagesContainer");
+        if (langContainer) {
+          langContainer.innerHTML = languages
+            .map(function (l) {
+              return `
+                        <div>
+                            <div class="flex justify-between text-sm mb-2"><span class="font-medium">${l.name}</span><span class="text-muted">${l.level || ""}</span></div>
+                            <div class="skill-bar-track"><div class="skill-bar-fill" data-target="${l.percent || 0}"></div></div>
+                        </div>
+                    `;
+            })
+            .join("");
+        }
+
+        // Hobbies
+        var hobbies = data.hobbies || [];
+        var hobbiesContainer = document.getElementById("hobbiesContainer");
+        if (hobbiesContainer) {
+          hobbiesContainer.innerHTML = hobbies
+            .map(function (h) {
+              return `
+                        <span class="skill-tag px-5 py-3 rounded-full text-sm font-medium inline-flex items-center">
+                            <i class="${h.icon || "fas fa-heart"} mr-2 text-pink-400"></i>${h.name}
+                        </span>
+                    `;
+            })
+            .join("");
+        }
+
+        // Animate skill bars after render
+        setTimeout(function () {
+          var bars = document.querySelectorAll(".skill-bar-fill");
+          bars.forEach(function (bar) {
+            var target = bar.getAttribute("data-target");
+            if (target) bar.style.width = target + "%";
+          });
+        }, 500);
+
+        // Scroll reveal
+        if (typeof initScrollReveal === "function") {
+          initScrollReveal();
+        }
+      }
+
+      // ============================================================
+      // CERTIFICATE LIGHTBOX
+      // ============================================================
+      function openCertLightbox(idx) {
+        var c = window.allCerts[idx];
+        if (!c) return;
+        document.getElementById("certLightboxImg").src = c.image || "";
+        document.getElementById("certLightboxImg").alt = c.name || "";
+        document.getElementById("certLightboxTitle").textContent = c.name || "";
+        document.getElementById("certLightboxMeta").textContent =
+          (c.issuer ? c.issuer + " · " : "") + (c.date || "");
+        document.getElementById("certLightbox").classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeCertLightbox() {
+        document.getElementById("certLightbox").classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeCertLightbox();
+      });
+
+      // ============================================================
+      // INIT
+      // ============================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        var preloader = document.getElementById("preloader");
+        if (preloader) {
+          setTimeout(function () {
+            preloader.classList.add("hide");
+          }, 300);
+        }
+
+        renderAbout();
+
+        document.querySelectorAll("[data-year]").forEach(function (el) {
+          el.textContent = new Date().getFullYear();
+        });
+      });
+    </script>
+
+    <!-- ===== CERTIFICATE LIGHTBOX ===== -->
+    <div
+      id="certLightbox"
+      class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        class="absolute inset-0 bg-black/80"
+        onclick="closeCertLightbox()"
+      ></div>
+      <div
+        class="relative max-w-3xl w-full max-h-[90vh] flex flex-col items-center"
+      >
+        <button
+          onclick="closeCertLightbox()"
+          class="absolute -top-3 -right-3 md:top-2 md:right-2 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center z-10 shadow-lg"
+          aria-label="Close"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+        <img
+          id="certLightboxImg"
+          src=""
+          alt=""
+          class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl bg-white"
+        />
+        <div class="text-center mt-4">
+          <h4 id="certLightboxTitle" class="text-white font-semibold"></h4>
+          <p id="certLightboxMeta" class="text-white/60 text-sm"></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

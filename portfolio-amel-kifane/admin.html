@@ -1,0 +1,1820 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — Amel Kifane</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ===== BASE ===== */
+      * {
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        background: #0a0a0f;
+        color: #f3f4f6;
+        min-height: 100vh;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        transition: all 0.3s ease;
+      }
+      .glass-card:hover {
+        border-color: rgba(96, 165, 250, 0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 60px rgba(96, 165, 250, 0.1);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #60a5fa, #a78bfa);
+        transition: all 0.3s ease;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-primary:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 40px rgba(96, 165, 250, 0.35);
+      }
+      .btn-outline {
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        color: #f3f4f6;
+        background: transparent;
+        cursor: pointer;
+      }
+      .btn-outline:hover {
+        border-color: #60a5fa;
+        background: rgba(96, 165, 250, 0.1);
+      }
+      .btn-danger {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .btn-danger:hover {
+        background: rgba(239, 68, 68, 0.3);
+        transform: scale(1.05);
+      }
+      .btn-success {
+        background: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .btn-success:hover {
+        background: rgba(34, 197, 94, 0.3);
+        transform: scale(1.05);
+      }
+      .admin-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #f3f4f6;
+        border-radius: 0.75rem;
+        padding: 0.65rem 1rem;
+        width: 100%;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .admin-input:focus {
+        border-color: #60a5fa;
+      }
+      .admin-input::placeholder {
+        color: #6b7280;
+      }
+      .admin-textarea {
+        min-height: 60px;
+        resize: vertical;
+      }
+      .tab-btn {
+        transition: all 0.2s ease;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #9ca3af;
+        padding: 0.5rem 1.25rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+      }
+      .tab-btn.active {
+        background: linear-gradient(135deg, #60a5fa, #a78bfa);
+        color: #fff;
+        border-color: transparent;
+      }
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+      #toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: #1a1a2e;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #f3f4f6;
+        padding: 14px 22px;
+        border-radius: 12px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 9996;
+        font-size: 14px;
+      }
+      #toast.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+      #preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #0a0a0f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          opacity 0.5s ease,
+          visibility 0.5s ease;
+      }
+      #preloader.hide {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .loader-ring {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top-color: #60a5fa;
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .hidden {
+        display: none !important;
+      }
+      .text-muted {
+        color: #9ca3af;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-gradient {
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          rgba(96, 165, 250, 0.1) 0%,
+          transparent 70%
+        );
+      }
+      .site-header {
+        background: rgba(10, 10, 15, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .theme-toggle {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #9ca3af;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: transparent;
+      }
+      .theme-toggle:hover {
+        border-color: #60a5fa;
+        color: #60a5fa;
+      }
+      .cert-item,
+      .timeline-item,
+      .exp-item,
+      .edu-item {
+        transition: all 0.3s ease;
+      }
+      .cert-item:hover,
+      .timeline-item:hover,
+      .exp-item:hover,
+      .edu-item:hover {
+        border-color: #60a5fa !important;
+      }
+      .cert-preview {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .badge-blue {
+        color: #60a5fa;
+      }
+      .badge-purple {
+        color: #a78bfa;
+      }
+      .badge-pink {
+        color: #f472b6;
+      }
+      .badge-green {
+        color: #34d399;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== PRELOADER ===== -->
+    <div id="preloader"><div class="loader-ring"></div></div>
+
+    <!-- ===== LOGIN ===== -->
+    <div
+      id="loginPage"
+      class="min-h-screen flex items-center justify-center px-4 hero-gradient"
+    >
+      <div class="glass-card p-8 rounded-2xl max-w-md w-full">
+        <div class="text-center mb-6">
+          <div class="text-5xl mb-4">🔐</div>
+          <h1 class="text-2xl font-bold">Admin Panel</h1>
+          <p class="text-muted text-sm mt-2">Enter password to continue</p>
+        </div>
+        <input
+          type="password"
+          id="passwordInput"
+          placeholder="Password"
+          class="admin-input mb-4"
+          onkeydown="if (event.key === 'Enter') handleLogin();"
+        />
+        <button
+          onclick="handleLogin()"
+          class="btn-primary w-full py-3 rounded-xl font-bold"
+        >
+          <i class="fas fa-sign-in-alt ml-2"></i> Login
+        </button>
+        <p
+          id="errorMessage"
+          class="text-red-400 text-center mt-3 hidden text-sm"
+        >
+          ❌ Wrong password
+        </p>
+        <div class="mt-6 text-center border-t border-white/10 pt-4">
+          <a
+            href="index.html"
+            class="text-muted hover:text-blue-400 transition text-sm"
+            ><i class="fas fa-arrow-right ml-2"></i> Back to Site</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div id="dashboard" class="hidden">
+      <!-- Header -->
+      <header class="site-header sticky top-0 z-40">
+        <div
+          class="container mx-auto px-6 py-4 flex justify-between items-center"
+        >
+          <h1 class="text-xl font-extrabold">
+            <span class="gradient-text">Admin Panel</span>
+          </h1>
+          <div class="flex items-center gap-3">
+            <button
+              onclick="toggleTheme()"
+              class="theme-toggle"
+              aria-label="Toggle theme"
+            >
+              <i class="fas fa-sun"></i>
+            </button>
+            <a
+              href="index.html"
+              class="text-sm text-muted hover:text-blue-400 transition hidden sm:inline"
+              ><i class="fas fa-globe ml-1"></i> View Site</a
+            >
+            <button
+              onclick="handleLogout()"
+              class="bg-red-500/10 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500/20 transition text-sm"
+            >
+              <i class="fas fa-sign-out-alt ml-1"></i> Logout
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="container mx-auto px-6 py-8">
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+          <div class="glass-card p-6 rounded-xl">
+            <div class="text-3xl font-bold text-purple-400" id="statCerts">
+              0
+            </div>
+            <div class="text-muted text-sm mt-1">Certificates</div>
+          </div>
+          <div class="glass-card p-6 rounded-xl">
+            <div class="text-3xl font-bold text-blue-400" id="statProjects">
+              0
+            </div>
+            <div class="text-muted text-sm mt-1">Projects</div>
+          </div>
+          <div class="glass-card p-6 rounded-xl">
+            <div class="text-3xl font-bold text-pink-400" id="statMessages">
+              0
+            </div>
+            <div class="text-muted text-sm mt-1">Messages</div>
+          </div>
+          <div class="glass-card p-6 rounded-xl">
+            <div class="text-3xl font-bold text-green-400" id="statUnread">
+              0
+            </div>
+            <div class="text-muted text-sm mt-1">Unread</div>
+          </div>
+          <div class="glass-card p-6 rounded-xl">
+            <div class="text-3xl font-bold text-yellow-400" id="statReviews">
+              0
+            </div>
+            <div class="text-muted text-sm mt-1">Reviews</div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex flex-wrap gap-2 mb-6">
+          <button
+            class="tab-btn active"
+            data-tab="certs"
+            onclick="switchTab('certs')"
+          >
+            <i class="fas fa-certificate mr-1"></i> Certificates
+          </button>
+          <button class="tab-btn" data-tab="about" onclick="switchTab('about')">
+            <i class="fas fa-user mr-1"></i> About Content
+          </button>
+          <button
+            class="tab-btn"
+            data-tab="projects"
+            onclick="switchTab('projects')"
+          >
+            <i class="fas fa-diagram-project mr-1"></i> Projects
+          </button>
+          <button
+            class="tab-btn"
+            data-tab="messages"
+            onclick="switchTab('messages')"
+          >
+            <i class="fas fa-envelope mr-1"></i> Messages
+          </button>
+          <button
+            class="tab-btn"
+            data-tab="settings"
+            onclick="switchTab('settings')"
+          >
+            <i class="fas fa-gear mr-1"></i> Settings
+          </button>
+        </div>
+
+        <!-- ===== CERTIFICATES TAB ===== -->
+        <div id="tab-certs" class="tab-panel active space-y-6">
+          <!-- Add / Edit Form -->
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4" id="certFormTitle">
+              🎓 Add Certificate
+            </h2>
+            <input type="hidden" id="certEditId" value="" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                id="certName"
+                placeholder="Certificate Name *"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="certIssuer"
+                placeholder="Issuer (e.g. Microsoft)"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="certDate"
+                placeholder="Year (e.g. 2024)"
+                class="admin-input"
+              />
+              <textarea
+                id="certDesc"
+                placeholder="Description"
+                class="admin-input admin-textarea md:col-span-2"
+                rows="2"
+              ></textarea>
+              <div class="md:col-span-2">
+                <label class="text-xs text-muted block mb-1"
+                  >Certificate Photo</label
+                >
+                <div class="flex flex-col sm:flex-row gap-3 items-start">
+                  <input
+                    type="text"
+                    id="certImage"
+                    placeholder="Image URL (e.g. assets/certificates/name.png) or upload a photo from your device"
+                    class="admin-input flex-1"
+                  />
+                  <label
+                    class="btn-outline px-4 py-2.5 rounded-lg text-sm cursor-pointer whitespace-nowrap"
+                  >
+                    <i class="fas fa-upload ml-1"></i> Upload from device
+                    <input
+                      type="file"
+                      id="certImageFile"
+                      accept="image/*"
+                      class="hidden"
+                      onchange="handleImageUpload(event, 'certImage', 'certImagePreview')"
+                    />
+                  </label>
+                </div>
+                <img
+                  id="certImagePreview"
+                  class="cert-preview mt-2 hidden"
+                  alt="Preview"
+                />
+              </div>
+            </div>
+            <div class="flex gap-3 mt-4">
+              <button
+                onclick="saveCertificate()"
+                class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                <i class="fas fa-save ml-1"></i>
+                <span id="certSaveLabel">Add Certificate</span>
+              </button>
+              <button
+                onclick="resetCertForm()"
+                class="btn-outline px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <!-- Certificate List -->
+          <div class="glass-card rounded-2xl p-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-bold">📜 Certificate List</h2>
+              <button
+                onclick="resetAllCerts()"
+                class="text-red-400 hover:text-red-300 text-sm"
+              >
+                <i class="fas fa-undo ml-1"></i> Reset to Defaults
+              </button>
+            </div>
+            <div id="certList" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- ===== ABOUT CONTENT TAB ===== -->
+        <div id="tab-about" class="tab-panel space-y-6">
+          <!-- ===== TIMELINE ===== -->
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4 text-blue-400" id="timelineFormTitle">⏳ My Timeline</h2>
+            <input type="hidden" id="timelineEditIndex" value="" />
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input
+                type="text"
+                id="timelineYear"
+                placeholder="Year (e.g. 2024)"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="timelineTitle"
+                placeholder="Title"
+                class="admin-input"
+              />
+              <textarea
+                id="timelineDesc"
+                placeholder="Description"
+                class="admin-input admin-textarea"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="flex gap-3 mt-4">
+              <button
+                onclick="saveTimelineItem()"
+                class="btn-success px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                <i class="fas fa-plus ml-1"></i> <span id="timelineSaveLabel">Add Timeline Item</span>
+              </button>
+              <button
+                onclick="resetTimelineForm()"
+                class="btn-outline px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+            <div id="timelineList" class="mt-4 space-y-2"></div>
+          </div>
+
+          <!-- ===== WORK EXPERIENCE ===== -->
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4 text-purple-400" id="expFormTitle">
+              💼 Work Experience
+            </h2>
+            <input type="hidden" id="expEditIndex" value="" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                id="expTitle"
+                placeholder="Title *"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="expCompany"
+                placeholder="Company"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="expPeriod"
+                placeholder="Period (e.g. 2024 — Present)"
+                class="admin-input"
+              />
+              <textarea
+                id="expDesc"
+                placeholder="Description"
+                class="admin-input admin-textarea md:col-span-2"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="flex gap-3 mt-4">
+              <button
+                onclick="saveExperienceItem()"
+                class="btn-success px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                <i class="fas fa-plus ml-1"></i> <span id="expSaveLabel">Add Experience</span>
+              </button>
+              <button
+                onclick="resetExperienceForm()"
+                class="btn-outline px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+            <div id="experienceList" class="mt-4 space-y-2"></div>
+          </div>
+
+          <!-- ===== EDUCATION ===== -->
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4 text-pink-400" id="eduFormTitle">
+              🎓 My Education
+            </h2>
+            <input type="hidden" id="eduEditIndex" value="" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                id="eduDegree"
+                placeholder="Degree *"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="eduInstitution"
+                placeholder="Institution"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="eduPeriod"
+                placeholder="Period (e.g. 2024 — Present)"
+                class="admin-input"
+              />
+            </div>
+            <div class="flex gap-3 mt-4">
+              <button
+                onclick="saveEducationItem()"
+                class="btn-success px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                <i class="fas fa-plus ml-1"></i> <span id="eduSaveLabel">Add Education</span>
+              </button>
+              <button
+                onclick="resetEducationForm()"
+                class="btn-outline px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+            <div id="educationList" class="mt-4 space-y-2"></div>
+          </div>
+
+          <!-- ===== PROFILE ===== -->
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4">👤 Profile</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                id="aboutName"
+                placeholder="Full Name"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="aboutFirstName"
+                placeholder="First Name"
+                class="admin-input"
+              />
+              <textarea
+                id="aboutBio"
+                placeholder="Short Bio"
+                class="admin-input md:col-span-2"
+                rows="2"
+              ></textarea>
+              <textarea
+                id="aboutLongBio"
+                placeholder="Long Bio"
+                class="admin-input md:col-span-2"
+                rows="3"
+              ></textarea>
+              <input
+                type="text"
+                id="aboutLocation"
+                placeholder="Location"
+                class="admin-input"
+              />
+              <input
+                type="email"
+                id="aboutEmail"
+                placeholder="Email"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="aboutPhone"
+                placeholder="Phone"
+                class="admin-input"
+              />
+              <input
+                type="url"
+                id="aboutGithub"
+                placeholder="GitHub URL"
+                class="admin-input"
+              />
+              <input
+                type="url"
+                id="aboutLinkedin"
+                placeholder="LinkedIn URL"
+                class="admin-input"
+              />
+            </div>
+            <button
+              onclick="saveProfile()"
+              class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium mt-4"
+            >
+              <i class="fas fa-save ml-1"></i> Save Profile
+            </button>
+          </div>
+
+          <!-- ===== SKILLS ===== -->
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4 text-blue-400">⚡ Skills</h2>
+            <p class="text-sm text-muted mb-4">
+              Drag the sliders to change skill levels.
+            </p>
+            <div id="skillsList" class="space-y-3"></div>
+          </div>
+
+          <!-- ===== LANGUAGES ===== -->
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4 text-green-400">🌍 Languages</h2>
+            <div id="languagesList" class="space-y-3"></div>
+          </div>
+
+          <!-- ===== HOBBIES ===== -->
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4 text-pink-400">🎯 Hobbies</h2>
+            <div id="hobbiesList" class="flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+
+        <!-- ===== PROJECTS TAB ===== -->
+        <div id="tab-projects" class="tab-panel space-y-6">
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4" id="projectFormTitle">
+              ➕ Add Project
+            </h2>
+            <input type="hidden" id="projectEditId" value="" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                id="projectTitle"
+                placeholder="Title"
+                class="admin-input"
+              />
+              <input
+                type="text"
+                id="projectCategory"
+                placeholder="Category"
+                class="admin-input"
+              />
+              <textarea
+                id="projectDesc"
+                placeholder="Short description (shown on the project card)"
+                class="admin-input md:col-span-2"
+                rows="2"
+              ></textarea>
+              <textarea
+                id="projectLongDesc"
+                placeholder="Full description (shown in the project details popup)"
+                class="admin-input md:col-span-2"
+                rows="3"
+              ></textarea>
+              <input
+                type="text"
+                id="projectTech"
+                placeholder="Technologies (HTML, CSS, JS)"
+                class="admin-input"
+              />
+              <input
+                type="url"
+                id="projectLink"
+                placeholder="Live Project Link (e.g. https://your-project.netlify.app)"
+                class="admin-input"
+              />
+              <div class="md:col-span-2">
+                <label class="text-xs text-muted block mb-1"
+                  >Project Image</label
+                >
+                <div class="flex flex-col sm:flex-row gap-3 items-start">
+                  <input
+                    type="url"
+                    id="projectImage"
+                    placeholder="Image URL (or upload a photo from your device)"
+                    class="admin-input flex-1"
+                  />
+                  <label
+                    class="btn-outline px-4 py-2.5 rounded-lg text-sm cursor-pointer whitespace-nowrap"
+                  >
+                    <i class="fas fa-upload ml-1"></i> Upload from device
+                    <input
+                      type="file"
+                      id="projectImageFile"
+                      accept="image/*"
+                      class="hidden"
+                      onchange="handleImageUpload(event, 'projectImage', 'projectImagePreview')"
+                    />
+                  </label>
+                </div>
+                <img
+                  id="projectImagePreview"
+                  class="cert-preview mt-2 hidden"
+                  alt="Preview"
+                />
+              </div>
+            </div>
+            <div class="flex gap-3 mt-4">
+              <button
+                onclick="saveProject()"
+                class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                <i class="fas fa-save ml-1"></i>
+                <span id="projectSaveLabel">Add Project</span>
+              </button>
+              <button
+                onclick="resetProjectForm()"
+                class="btn-outline px-6 py-2.5 rounded-lg text-sm font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4">📁 Project List</h2>
+            <div id="projectList" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- ===== MESSAGES TAB ===== -->
+        <div id="tab-messages" class="tab-panel space-y-6">
+          <div class="glass-card rounded-2xl p-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-bold">📨 Messages</h2>
+              <button
+                onclick="clearAllMessages()"
+                class="text-red-400 hover:text-red-300 text-sm"
+              >
+                Delete All
+              </button>
+            </div>
+            <div id="messageList" class="space-y-3"></div>
+            <p id="noMessages" class="hidden text-muted text-center py-10">
+              No messages yet.
+            </p>
+          </div>
+        </div>
+
+        <!-- ===== SETTINGS TAB ===== -->
+        <div id="tab-settings" class="tab-panel space-y-6">
+          <div class="glass-card rounded-2xl p-6 max-w-md">
+            <h2 class="text-lg font-bold mb-4">🔑 Change Password</h2>
+            <div class="space-y-3">
+              <input
+                type="password"
+                id="currentPassword"
+                placeholder="Current Password"
+                class="admin-input"
+              />
+              <input
+                type="password"
+                id="newPassword"
+                placeholder="New Password"
+                class="admin-input"
+              />
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm Password"
+                class="admin-input"
+              />
+            </div>
+            <button
+              onclick="changePassword()"
+              class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium mt-4"
+            >
+              Save Password
+            </button>
+            <p class="text-xs text-muted mt-4">Default password: hana2024</p>
+          </div>
+          <div class="glass-card rounded-2xl p-6 max-w-md">
+            <h2 class="text-lg font-bold mb-4">🔄 Reset All Data</h2>
+            <p class="text-sm text-muted mb-4">
+              This will reset certificates, timeline, experience, education,
+              skills, languages, hobbies, and profile to default values.
+            </p>
+            <button
+              onclick="resetAllData()"
+              class="btn-danger px-6 py-2.5 rounded-lg text-sm font-medium"
+            >
+              <i class="fas fa-exclamation-triangle ml-1"></i> Reset Everything
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast"></div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="js/data.js"></script>
+    <script>
+      // ============================================================
+      // 1. CONFIG
+      // ============================================================
+      var ADMIN_PASSWORD = "hana2024";
+
+      function getStoredPassword() {
+        var saved = localStorage.getItem("adminPassword");
+        if (!saved) {
+          localStorage.setItem("adminPassword", ADMIN_PASSWORD);
+          saved = ADMIN_PASSWORD;
+        }
+        return saved;
+      }
+
+      // ============================================================
+      // 2. LOGIN / LOGOUT
+      // ============================================================
+      function handleLogin() {
+        var password = document.getElementById("passwordInput").value;
+        var stored = getStoredPassword();
+
+        if (password === stored) {
+          document.getElementById("loginPage").classList.add("hidden");
+          document.getElementById("dashboard").classList.remove("hidden");
+          sessionStorage.setItem("isAdmin", "true");
+          loadDashboard();
+        } else {
+          document.getElementById("errorMessage").classList.remove("hidden");
+          showToast("❌ Wrong password!");
+        }
+      }
+
+      function handleLogout() {
+        sessionStorage.removeItem("isAdmin");
+        location.reload();
+      }
+
+      // Check if already logged in
+      if (sessionStorage.getItem("isAdmin") === "true") {
+        document.addEventListener("DOMContentLoaded", function () {
+          document.getElementById("loginPage").classList.add("hidden");
+          document.getElementById("dashboard").classList.remove("hidden");
+          loadDashboard();
+        });
+      }
+
+      // ============================================================
+      // 3b. IMAGE UPLOAD (from device, converted to base64 data URL)
+      // ============================================================
+      function handleImageUpload(event, targetInputId, previewId) {
+        var file = event.target.files && event.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith("image/")) {
+          showToast("Please choose an image file.");
+          return;
+        }
+        if (file.size > 3 * 1024 * 1024) {
+          showToast("Image is too large. Please choose one under 3MB.");
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var dataUrl = e.target.result;
+          var input = document.getElementById(targetInputId);
+          if (input) input.value = dataUrl;
+          var preview = document.getElementById(previewId);
+          if (preview) {
+            preview.src = dataUrl;
+            preview.classList.remove("hidden");
+          }
+          showToast("✅ Photo loaded — don't forget to save.");
+        };
+        reader.onerror = function () {
+          showToast("Could not read that file. Please try another image.");
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // ============================================================
+      // 3. TOAST
+      // ============================================================
+      var toastTimer = null;
+
+      function showToast(msg) {
+        var toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      // ============================================================
+      // 4. THEME
+      // ============================================================
+      function toggleTheme() {
+        var html = document.documentElement;
+        var current = html.getAttribute("data-theme");
+        var next = current === "light" ? "dark" : "light";
+        html.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        var icons = document.querySelectorAll(".theme-toggle i");
+        icons.forEach(function (icon) {
+          icon.className = next === "light" ? "fas fa-moon" : "fas fa-sun";
+        });
+      }
+
+      // ============================================================
+      // 5. SWITCH TABS
+      // ============================================================
+      function switchTab(tab) {
+        var panels = document.querySelectorAll(".tab-panel");
+        var btns = document.querySelectorAll(".tab-btn");
+        panels.forEach(function (el) {
+          el.classList.remove("active");
+        });
+        btns.forEach(function (el) {
+          el.classList.remove("active");
+        });
+        var target = document.getElementById("tab-" + tab);
+        if (target) target.classList.add("active");
+        var btn = document.querySelector('.tab-btn[data-tab="' + tab + '"]');
+        if (btn) btn.classList.add("active");
+      }
+
+      // ============================================================
+      // 6. DASHBOARD
+      // ============================================================
+      function loadDashboard() {
+        loadCertificates();
+        loadAboutContent();
+        loadProjects();
+        loadMessages();
+        updateStats();
+      }
+
+      function updateStats() {
+        var certs = SiteData.getCertificates();
+        var projects = SiteData.getProjects();
+        var messages = SiteData.getMessages();
+        var reviews = SiteData.getReviews();
+        document.getElementById("statCerts").textContent = certs.length;
+        document.getElementById("statProjects").textContent = projects.length;
+        document.getElementById("statMessages").textContent = messages.length;
+        document.getElementById("statUnread").textContent = messages.filter(
+          function (m) {
+            return !m.read;
+          },
+        ).length;
+        document.getElementById("statReviews").textContent = reviews.length;
+      }
+
+      // ============================================================
+      // 7. CERTIFICATES CRUD
+      // ============================================================
+      function loadCertificates() {
+        var certs = SiteData.getCertificates();
+        var list = document.getElementById("certList");
+        if (certs.length === 0) {
+          list.innerHTML =
+            '<p class="text-muted text-center py-6">No certificates yet.</p>';
+          return;
+        }
+        var html = "";
+        certs.forEach(function (c) {
+          html += `
+                    <div class="cert-item flex justify-between items-center bg-white/[0.03] p-4 rounded-xl border" style="border-color: rgba(255,255,255,0.06)">
+                        <div class="flex items-center gap-4 min-w-0">
+                            ${c.image ? `<img src="${c.image}" alt="${c.name}" class="cert-preview" onerror="this.style.display='none'" />` : `<div class="w-[60px] h-[60px] rounded-lg bg-white/5 flex items-center justify-center text-2xl">📜</div>`}
+                            <div class="min-w-0">
+                                <p class="font-semibold">${c.name}</p>
+                                <p class="text-xs text-muted">${c.issuer || ""} ${c.date ? "· " + c.date : ""}</p>
+                                ${c.description ? `<p class="text-xs text-muted truncate max-w-xs">${c.description}</p>` : ""}
+                            </div>
+                        </div>
+                        <div class="flex gap-2 shrink-0 ms-3">
+                            <button onclick="editCertificate(${c.id})" class="text-blue-400 hover:text-blue-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button onclick="deleteCertificate(${c.id})" class="text-red-400 hover:text-red-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+        });
+        list.innerHTML = html;
+      }
+
+      function resetCertForm() {
+        document.getElementById("certEditId").value = "";
+        document.getElementById("certName").value = "";
+        document.getElementById("certIssuer").value = "";
+        document.getElementById("certDate").value = "";
+        document.getElementById("certDesc").value = "";
+        document.getElementById("certImage").value = "";
+        var certPreview = document.getElementById("certImagePreview");
+        if (certPreview) {
+          certPreview.src = "";
+          certPreview.classList.add("hidden");
+        }
+        document.getElementById("certSaveLabel").textContent =
+          "Add Certificate";
+        document.getElementById("certFormTitle").textContent =
+          "🎓 Add Certificate";
+      }
+
+      function editCertificate(id) {
+        var cert = SiteData.getCertificate(id);
+        if (!cert) return;
+        document.getElementById("certEditId").value = id;
+        document.getElementById("certName").value = cert.name || "";
+        document.getElementById("certIssuer").value = cert.issuer || "";
+        document.getElementById("certDate").value = cert.date || "";
+        document.getElementById("certDesc").value = cert.description || "";
+        document.getElementById("certImage").value = cert.image || "";
+        var certPreview = document.getElementById("certImagePreview");
+        if (certPreview) {
+          if (cert.image) {
+            certPreview.src = cert.image;
+            certPreview.classList.remove("hidden");
+          } else {
+            certPreview.classList.add("hidden");
+          }
+        }
+        document.getElementById("certSaveLabel").textContent =
+          "Update Certificate";
+        document.getElementById("certFormTitle").textContent =
+          "✏️ Edit Certificate";
+        switchTab("certs");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function saveCertificate() {
+        var name = document.getElementById("certName").value.trim();
+        if (!name) {
+          showToast("Please enter certificate name.");
+          return;
+        }
+
+        var editId = document.getElementById("certEditId").value;
+        var data = {
+          name: name,
+          issuer:
+            document.getElementById("certIssuer").value.trim() || "Unknown",
+          date:
+            document.getElementById("certDate").value.trim() ||
+            new Date().getFullYear().toString(),
+          description: document.getElementById("certDesc").value.trim(),
+          image: document.getElementById("certImage").value.trim() || "",
+        };
+
+        if (editId) {
+          SiteData.updateCertificate(Number(editId), data);
+          showToast("✅ Certificate updated!");
+        } else {
+          SiteData.addCertificate(data);
+          showToast("✅ Certificate added!");
+        }
+        resetCertForm();
+        loadDashboard();
+      }
+
+      function deleteCertificate(id) {
+        if (!confirm("Delete this certificate?")) return;
+        SiteData.deleteCertificate(id);
+        loadDashboard();
+        showToast("🗑️ Certificate deleted.");
+      }
+
+      function resetAllCerts() {
+        if (!confirm("Reset all certificates to defaults?")) return;
+        SiteData.resetCertificates();
+        loadDashboard();
+        showToast("✅ Certificates reset to defaults.");
+      }
+
+      // ============================================================
+      // 8. ABOUT CONTENT (Timeline, Experience, Education, Profile, Skills, Languages, Hobbies)
+      // ============================================================
+      function loadAboutContent() {
+        loadTimeline();
+        loadExperience();
+        loadEducation();
+        loadProfile();
+        loadSkills();
+        loadLanguages();
+        loadHobbies();
+      }
+
+      // ---- TIMELINE ----
+      function loadTimeline() {
+        var items = SiteData.getTimeline();
+        var list = document.getElementById("timelineList");
+        if (items.length === 0) {
+          list.innerHTML =
+            '<p class="text-muted text-sm py-2">No timeline items yet.</p>';
+          return;
+        }
+        var html = "";
+        items.forEach(function (item, i) {
+          html += `
+                    <div class="timeline-item flex justify-between items-center bg-white/[0.03] p-3 rounded-lg border border-white/5">
+                        <div>
+                            <span class="text-blue-400 font-semibold">${item.year}</span>
+                            <span class="font-medium"> - ${item.title}</span>
+                            ${item.description ? `<p class="text-xs text-muted">${item.description}</p>` : ""}
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editTimelineItem(${i})" class="text-blue-400 hover:text-blue-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button onclick="deleteTimelineItem(${i})" class="text-red-400 hover:text-red-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+        });
+        list.innerHTML = html;
+      }
+
+      function resetTimelineForm() {
+        document.getElementById("timelineEditIndex").value = "";
+        document.getElementById("timelineYear").value = "";
+        document.getElementById("timelineTitle").value = "";
+        document.getElementById("timelineDesc").value = "";
+        document.getElementById("timelineSaveLabel").textContent =
+          "Add Timeline Item";
+        document.getElementById("timelineFormTitle").textContent =
+          "⏳ My Timeline";
+      }
+
+      function editTimelineItem(index) {
+        var items = SiteData.getTimeline();
+        var item = items[index];
+        if (!item) return;
+        document.getElementById("timelineEditIndex").value = index;
+        document.getElementById("timelineYear").value = item.year || "";
+        document.getElementById("timelineTitle").value = item.title || "";
+        document.getElementById("timelineDesc").value =
+          item.description || "";
+        document.getElementById("timelineSaveLabel").textContent =
+          "Update Timeline Item";
+        document.getElementById("timelineFormTitle").textContent =
+          "✏️ Edit Timeline Item";
+        switchTab("about");
+      }
+
+      function saveTimelineItem() {
+        var year = document.getElementById("timelineYear").value.trim();
+        var title = document.getElementById("timelineTitle").value.trim();
+        var desc = document.getElementById("timelineDesc").value.trim();
+        if (!year || !title) {
+          showToast("Please enter year and title.");
+          return;
+        }
+        var editIndex = document.getElementById("timelineEditIndex").value;
+        var items = SiteData.getTimeline();
+        if (editIndex !== "") {
+          items[Number(editIndex)] = {
+            year: year,
+            title: title,
+            description: desc,
+          };
+          SiteData.saveTimeline(items);
+          showToast("✅ Timeline item updated!");
+        } else {
+          items.push({ year: year, title: title, description: desc });
+          SiteData.saveTimeline(items);
+          showToast("✅ Timeline item added!");
+        }
+        resetTimelineForm();
+        loadTimeline();
+      }
+
+      function deleteTimelineItem(index) {
+        if (!confirm("Delete this timeline item?")) return;
+        var items = SiteData.getTimeline();
+        items.splice(index, 1);
+        SiteData.saveTimeline(items);
+        resetTimelineForm();
+        loadTimeline();
+        showToast("🗑️ Timeline item deleted.");
+      }
+
+      // ---- EXPERIENCE ----
+      function loadExperience() {
+        var items = SiteData.getExperience();
+        var list = document.getElementById("experienceList");
+        if (items.length === 0) {
+          list.innerHTML =
+            '<p class="text-muted text-sm py-2">No experience items yet.</p>';
+          return;
+        }
+        var html = "";
+        items.forEach(function (item, i) {
+          html += `
+                    <div class="exp-item flex justify-between items-center bg-white/[0.03] p-3 rounded-lg border border-white/5">
+                        <div>
+                            <span class="font-semibold">${item.title}</span>
+                            ${item.company ? `<span class="text-muted text-sm"> - ${item.company}</span>` : ""}
+                            ${item.period ? `<span class="text-xs text-purple-400 block">${item.period}</span>` : ""}
+                            ${item.description ? `<p class="text-xs text-muted">${item.description}</p>` : ""}
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editExperienceItem(${i})" class="text-blue-400 hover:text-blue-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button onclick="deleteExperienceItem(${i})" class="text-red-400 hover:text-red-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+        });
+        list.innerHTML = html;
+      }
+
+      function resetExperienceForm() {
+        document.getElementById("expEditIndex").value = "";
+        document.getElementById("expTitle").value = "";
+        document.getElementById("expCompany").value = "";
+        document.getElementById("expPeriod").value = "";
+        document.getElementById("expDesc").value = "";
+        document.getElementById("expSaveLabel").textContent =
+          "Add Experience";
+        document.getElementById("expFormTitle").textContent =
+          "💼 Work Experience";
+      }
+
+      function editExperienceItem(index) {
+        var items = SiteData.getExperience();
+        var item = items[index];
+        if (!item) return;
+        document.getElementById("expEditIndex").value = index;
+        document.getElementById("expTitle").value = item.title || "";
+        document.getElementById("expCompany").value = item.company || "";
+        document.getElementById("expPeriod").value = item.period || "";
+        document.getElementById("expDesc").value = item.description || "";
+        document.getElementById("expSaveLabel").textContent =
+          "Update Experience";
+        document.getElementById("expFormTitle").textContent =
+          "✏️ Edit Experience";
+        switchTab("about");
+      }
+
+      function saveExperienceItem() {
+        var title = document.getElementById("expTitle").value.trim();
+        if (!title) {
+          showToast("Please enter title.");
+          return;
+        }
+        var editIndex = document.getElementById("expEditIndex").value;
+        var data = {
+          title: title,
+          company: document.getElementById("expCompany").value.trim(),
+          period: document.getElementById("expPeriod").value.trim(),
+          description: document.getElementById("expDesc").value.trim(),
+        };
+        var items = SiteData.getExperience();
+        if (editIndex !== "") {
+          items[Number(editIndex)] = data;
+          SiteData.saveExperience(items);
+          showToast("✅ Experience updated!");
+        } else {
+          items.push(data);
+          SiteData.saveExperience(items);
+          showToast("✅ Experience added!");
+        }
+        resetExperienceForm();
+        loadExperience();
+      }
+
+      function deleteExperienceItem(index) {
+        if (!confirm("Delete this experience?")) return;
+        var items = SiteData.getExperience();
+        items.splice(index, 1);
+        SiteData.saveExperience(items);
+        resetExperienceForm();
+        loadExperience();
+        showToast("🗑️ Experience deleted.");
+      }
+
+      // ---- EDUCATION ----
+      function loadEducation() {
+        var items = SiteData.getEducation();
+        var list = document.getElementById("educationList");
+        if (items.length === 0) {
+          list.innerHTML =
+            '<p class="text-muted text-sm py-2">No education items yet.</p>';
+          return;
+        }
+        var html = "";
+        items.forEach(function (item, i) {
+          html += `
+                    <div class="edu-item flex justify-between items-center bg-white/[0.03] p-3 rounded-lg border border-white/5">
+                        <div>
+                            <span class="font-semibold">${item.degree}</span>
+                            ${item.institution ? `<span class="text-muted text-sm"> - ${item.institution}</span>` : ""}
+                            ${item.period ? `<span class="text-xs text-pink-400 block">${item.period}</span>` : ""}
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editEducationItem(${i})" class="text-blue-400 hover:text-blue-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button onclick="deleteEducationItem(${i})" class="text-red-400 hover:text-red-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+        });
+        list.innerHTML = html;
+      }
+
+      function resetEducationForm() {
+        document.getElementById("eduEditIndex").value = "";
+        document.getElementById("eduDegree").value = "";
+        document.getElementById("eduInstitution").value = "";
+        document.getElementById("eduPeriod").value = "";
+        document.getElementById("eduSaveLabel").textContent = "Add Education";
+        document.getElementById("eduFormTitle").textContent =
+          "🎓 My Education";
+      }
+
+      function editEducationItem(index) {
+        var items = SiteData.getEducation();
+        var item = items[index];
+        if (!item) return;
+        document.getElementById("eduEditIndex").value = index;
+        document.getElementById("eduDegree").value = item.degree || "";
+        document.getElementById("eduInstitution").value =
+          item.institution || "";
+        document.getElementById("eduPeriod").value = item.period || "";
+        document.getElementById("eduSaveLabel").textContent =
+          "Update Education";
+        document.getElementById("eduFormTitle").textContent =
+          "✏️ Edit Education";
+        switchTab("about");
+      }
+
+      function saveEducationItem() {
+        var degree = document.getElementById("eduDegree").value.trim();
+        var institution = document
+          .getElementById("eduInstitution")
+          .value.trim();
+        if (!degree || !institution) {
+          showToast("Please enter degree and institution.");
+          return;
+        }
+        var editIndex = document.getElementById("eduEditIndex").value;
+        var data = {
+          degree: degree,
+          institution: institution,
+          period: document.getElementById("eduPeriod").value.trim(),
+        };
+        var items = SiteData.getEducation();
+        if (editIndex !== "") {
+          items[Number(editIndex)] = data;
+          SiteData.saveEducation(items);
+          showToast("✅ Education updated!");
+        } else {
+          items.push(data);
+          SiteData.saveEducation(items);
+          showToast("✅ Education added!");
+        }
+        resetEducationForm();
+        loadEducation();
+      }
+
+      function deleteEducationItem(index) {
+        if (!confirm("Delete this education?")) return;
+        var items = SiteData.getEducation();
+        items.splice(index, 1);
+        SiteData.saveEducation(items);
+        resetEducationForm();
+        loadEducation();
+        showToast("🗑️ Education deleted.");
+      }
+
+      // ---- PROFILE ----
+      function loadProfile() {
+        var profile = SiteData.getProfile();
+        document.getElementById("aboutName").value = profile.name || "";
+        document.getElementById("aboutFirstName").value =
+          profile.firstName || "";
+        document.getElementById("aboutBio").value = profile.bio || "";
+        document.getElementById("aboutLongBio").value = profile.longBio || "";
+        document.getElementById("aboutLocation").value = profile.location || "";
+        document.getElementById("aboutEmail").value = profile.email || "";
+        document.getElementById("aboutPhone").value = profile.phone || "";
+        document.getElementById("aboutGithub").value = profile.github || "";
+        document.getElementById("aboutLinkedin").value = profile.linkedin || "";
+      }
+
+      function saveProfile() {
+        var profile = {
+          name: document.getElementById("aboutName").value.trim(),
+          firstName: document.getElementById("aboutFirstName").value.trim(),
+          bio: document.getElementById("aboutBio").value.trim(),
+          longBio: document.getElementById("aboutLongBio").value.trim(),
+          location: document.getElementById("aboutLocation").value.trim(),
+          email: document.getElementById("aboutEmail").value.trim(),
+          phone: document.getElementById("aboutPhone").value.trim(),
+          github: document.getElementById("aboutGithub").value.trim(),
+          linkedin: document.getElementById("aboutLinkedin").value.trim(),
+        };
+        SiteData.saveProfile(profile);
+        showToast("✅ Profile saved!");
+      }
+
+      // ---- SKILLS ----
+      function loadSkills() {
+        var skills = SiteData.getSkills();
+        var list = document.getElementById("skillsList");
+        list.innerHTML = skills
+          .map(function (skill, i) {
+            return `
+                    <div class="flex items-center gap-4 bg-white/[0.03] p-3 rounded-lg border border-white/5">
+                        <span class="font-medium w-32">${skill.name}</span>
+                        <input type="range" min="0" max="100" value="${skill.level}" onchange="updateSkillLevel(${i}, this.value)" class="flex-1 accent-blue-400" />
+                        <span class="text-sm text-muted w-12 text-right">${skill.level}%</span>
+                    </div>
+                `;
+          })
+          .join("");
+      }
+
+      function updateSkillLevel(index, value) {
+        var skills = SiteData.getSkills();
+        if (skills[index]) {
+          skills[index].level = Number(value);
+          SiteData.saveSkills(skills);
+        }
+      }
+
+      // ---- LANGUAGES ----
+      function loadLanguages() {
+        var languages = SiteData.getLanguages();
+        var list = document.getElementById("languagesList");
+        list.innerHTML = languages
+          .map(function (lang, i) {
+            return `
+                    <div class="flex items-center gap-4 bg-white/[0.03] p-3 rounded-lg border border-white/5">
+                        <span class="font-medium w-32">${lang.name}</span>
+                        <input type="range" min="0" max="100" value="${lang.percent}" onchange="updateLanguageLevel(${i}, this.value)" class="flex-1 accent-purple-400" />
+                        <span class="text-sm text-muted w-12 text-right">${lang.percent}%</span>
+                    </div>
+                `;
+          })
+          .join("");
+      }
+
+      function updateLanguageLevel(index, value) {
+        var languages = SiteData.getLanguages();
+        if (languages[index]) {
+          languages[index].percent = Number(value);
+          SiteData.saveLanguages(languages);
+        }
+      }
+
+      // ---- HOBBIES ----
+      function loadHobbies() {
+        var hobbies = SiteData.getHobbies();
+        var list = document.getElementById("hobbiesList");
+        list.innerHTML = hobbies
+          .map(function (h) {
+            return `
+                    <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium inline-flex items-center bg-white/5 border border-white/5">
+                        <i class="${h.icon} mr-2 text-pink-400"></i>${h.name}
+                    </span>
+                `;
+          })
+          .join("");
+      }
+
+      // ============================================================
+      // 9. PROJECTS CRUD
+      // ============================================================
+      function loadProjects() {
+        var projects = SiteData.getProjects();
+        var list = document.getElementById("projectList");
+        if (projects.length === 0) {
+          list.innerHTML =
+            '<p class="text-muted text-center py-6">No projects yet.</p>';
+          return;
+        }
+        var html = "";
+        projects.forEach(function (p, i) {
+          html += `
+                    <div class="flex justify-between items-center bg-white/[0.03] p-4 rounded-xl border" style="border-color: rgba(255,255,255,0.06)">
+                        <div class="flex items-center gap-3">
+                            ${p.image ? `<img src="${p.image}" alt="${p.title}" class="cert-preview" onerror="this.style.display='none'" />` : ""}
+                            <div>
+                                <p class="font-semibold">${p.title || "Untitled"}</p>
+                                <p class="text-xs text-muted">${(p.technologies || []).join(", ")}</p>
+                                ${p.link ? `<a href="${p.link}" target="_blank" class="text-xs text-blue-400 hover:underline">${p.link}</a>` : ""}
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editProject(${p.id || i})" class="text-blue-400 hover:text-blue-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button onclick="deleteProject(${p.id || i})" class="text-red-400 hover:text-red-300 w-9 h-9 rounded-lg glass-card flex items-center justify-center" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+        });
+        list.innerHTML = html;
+      }
+
+      function resetProjectForm() {
+        document.getElementById("projectEditId").value = "";
+        document.getElementById("projectTitle").value = "";
+        document.getElementById("projectCategory").value = "";
+        document.getElementById("projectDesc").value = "";
+        document.getElementById("projectLongDesc").value = "";
+        document.getElementById("projectTech").value = "";
+        document.getElementById("projectLink").value = "";
+        document.getElementById("projectImage").value = "";
+        var preview = document.getElementById("projectImagePreview");
+        preview.src = "";
+        preview.classList.add("hidden");
+        document.getElementById("projectSaveLabel").textContent =
+          "Add Project";
+        document.getElementById("projectFormTitle").textContent =
+          "➕ Add Project";
+      }
+
+      function editProject(id) {
+        var projects = SiteData.getProjects();
+        var p = projects.find(function (proj) {
+          return proj.id === id || proj.id === Number(id);
+        });
+        if (!p) return;
+        document.getElementById("projectEditId").value = id;
+        document.getElementById("projectTitle").value = p.title || "";
+        document.getElementById("projectCategory").value = p.category || "";
+        document.getElementById("projectDesc").value = p.description || "";
+        document.getElementById("projectLongDesc").value =
+          p.longDescription || "";
+        document.getElementById("projectTech").value = (
+          p.technologies || []
+        ).join(", ");
+        document.getElementById("projectLink").value = p.link || "";
+        document.getElementById("projectImage").value = p.image || "";
+        var preview = document.getElementById("projectImagePreview");
+        if (p.image) {
+          preview.src = p.image;
+          preview.classList.remove("hidden");
+        } else {
+          preview.classList.add("hidden");
+        }
+        document.getElementById("projectSaveLabel").textContent =
+          "Update Project";
+        document.getElementById("projectFormTitle").textContent =
+          "✏️ Edit Project";
+        switchTab("projects");
+      }
+
+      function saveProject() {
+        var title = document.getElementById("projectTitle").value.trim();
+        if (!title) {
+          showToast("Please enter a title.");
+          return;
+        }
+        var editId = document.getElementById("projectEditId").value;
+        var data = {
+          title: title,
+          category:
+            document.getElementById("projectCategory").value.trim() ||
+            "Web App",
+          description: document.getElementById("projectDesc").value.trim(),
+          longDescription: document
+            .getElementById("projectLongDesc")
+            .value.trim(),
+          technologies: document
+            .getElementById("projectTech")
+            .value.split(",")
+            .map(function (t) {
+              return t.trim();
+            })
+            .filter(Boolean),
+          link: document.getElementById("projectLink").value.trim(),
+          image:
+            document.getElementById("projectImage").value.trim() ||
+            "https://via.placeholder.com/400x300",
+        };
+        var projects = SiteData.getProjects();
+        if (editId) {
+          var idx = projects.findIndex(function (p) {
+            return p.id === Number(editId) || p.id === editId;
+          });
+          if (idx > -1) {
+            projects[idx] = Object.assign({}, projects[idx], data);
+          }
+          SiteData.saveProjects(projects);
+          showToast("✅ Project updated!");
+        } else {
+          data.id = Date.now();
+          projects.push(data);
+          SiteData.saveProjects(projects);
+          showToast("✅ Project added!");
+        }
+        resetProjectForm();
+        loadDashboard();
+      }
+
+      function deleteProject(id) {
+        if (!confirm("Delete this project?")) return;
+        var projects = SiteData.getProjects().filter(function (p) {
+          return p.id !== id && p.id !== Number(id);
+        });
+        SiteData.saveProjects(projects);
+        loadDashboard();
+        showToast("🗑️ Project deleted.");
+      }
+
+      // ============================================================
+      // 10. MESSAGES
+      // ============================================================
+      function loadMessages() {
+        var messages = SiteData.getMessages();
+        var list = document.getElementById("messageList");
+        var noMsg = document.getElementById("noMessages");
+        if (messages.length === 0) {
+          list.innerHTML = "";
+          noMsg.classList.remove("hidden");
+          return;
+        }
+        noMsg.classList.add("hidden");
+        var html = "";
+        messages.forEach(function (m, i) {
+          html += `
+                    <div class="bg-white/[0.03] p-4 rounded-xl border ${m.read ? "border-white/5" : "border-blue-400/40"}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-semibold">${m.name || "Anonymous"} ${m.read ? "" : '<span class="text-blue-400 text-xs">● New</span>'}</p>
+                                <p class="text-xs text-muted">${m.email || ""} · ${m.date ? new Date(m.date).toLocaleString() : "Just now"}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                ${!m.read ? `<button onclick="markRead(${m.id || i})" class="text-green-400 text-xs">Mark Read</button>` : ""}
+                                <button onclick="deleteMessage(${m.id || i})" class="text-red-400"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <p class="text-sm font-medium mt-2">${m.subject || ""}</p>
+                        <p class="text-sm text-muted mt-1">${m.message || ""}</p>
+                    </div>
+                `;
+        });
+        list.innerHTML = html;
+      }
+
+      function markRead(id) {
+        var messages = SiteData.getMessages().map(function (m, i) {
+          var mId = m.id || i;
+          return mId === id || mId === Number(id) ? { ...m, read: true } : m;
+        });
+        SiteData.saveMessages(messages);
+        loadDashboard();
+      }
+
+      function deleteMessage(id) {
+        if (!confirm("Delete this message?")) return;
+        SiteData.deleteMessage(id);
+        loadDashboard();
+        showToast("🗑️ Message deleted.");
+      }
+
+      function clearAllMessages() {
+        if (!confirm("Delete all messages?")) return;
+        SiteData.clearMessages();
+        loadDashboard();
+        showToast("🗑️ All messages deleted.");
+      }
+
+      // ============================================================
+      // 11. SETTINGS
+      // ============================================================
+      function changePassword() {
+        var current = document.getElementById("currentPassword").value;
+        var next = document.getElementById("newPassword").value;
+        var confirm = document.getElementById("confirmPassword").value;
+        if (current !== getStoredPassword()) {
+          showToast("Current password is incorrect.");
+          return;
+        }
+        if (!next || next.length < 4) {
+          showToast("Password must be at least 4 characters.");
+          return;
+        }
+        if (next !== confirm) {
+          showToast("Passwords do not match.");
+          return;
+        }
+        localStorage.setItem("adminPassword", next);
+        document.getElementById("currentPassword").value = "";
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmPassword").value = "";
+        showToast("✅ Password changed!");
+      }
+
+      function resetAllData() {
+        if (!confirm("⚠️ Reset ALL data to defaults?")) return;
+        if (!confirm("⚠️ Really? This cannot be undone!")) return;
+        SiteData.resetToDefaults();
+        loadDashboard();
+        showToast("✅ All data reset to defaults!");
+      }
+
+      // ============================================================
+      // 12. RESET PASSWORD
+      // ============================================================
+      window.resetPassword = function () {
+        localStorage.setItem("adminPassword", "hana2024");
+        showToast("✅ Password reset to: hana2024");
+        console.log("Password reset to: hana2024");
+      };
+
+      // ============================================================
+      // 13. INIT
+      // ============================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        var preloader = document.getElementById("preloader");
+        if (preloader) {
+          setTimeout(function () {
+            preloader.classList.add("hide");
+          }, 300);
+        }
+
+        if (sessionStorage.getItem("isAdmin") === "true") {
+          document.getElementById("loginPage").classList.add("hidden");
+          document.getElementById("dashboard").classList.remove("hidden");
+          loadDashboard();
+        }
+
+        var savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        var icons = document.querySelectorAll(".theme-toggle i");
+        icons.forEach(function (icon) {
+          icon.className =
+            savedTheme === "light" ? "fas fa-moon" : "fas fa-sun";
+        });
+
+        console.log("🔑 Default password: hana2024");
+        console.log("🔑 Type resetPassword() in console to reset password");
+      });
+    </script>
+  </body>
+</html>

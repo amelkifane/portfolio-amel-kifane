@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects — Amel Kifane</title>
+    <meta
+      name="description"
+      content="Browse Amel Kifane's web development projects — from full platforms to small experiments."
+    />
+    <meta name="theme-color" content="#0a0a0f" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="preloader"><div class="loader-ring"></div></div>
+    <div id="offlineBanner">
+      <i class="fas fa-wifi mr-2"></i>You're offline — some content may not
+      load.
+    </div>
+    <div id="scrollProgress"></div>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="site-header fixed top-0 w-full z-50">
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <a href="index.html" class="text-2xl font-extrabold"
+          ><span class="gradient-text">Amel Kifane</span></a
+        >
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="nav-link text-sm font-medium">Home</a>
+          <a href="projects.html" class="nav-link text-sm font-medium active"
+            >Projects</a
+          >
+          <a href="about.html" class="nav-link text-sm font-medium">About</a>
+          <a href="contact.html" class="nav-link text-sm font-medium"
+            >Contact</a
+          >
+        </div>
+        <div class="flex items-center gap-3">
+          <button
+            onclick="toggleTheme()"
+            class="theme-toggle"
+            aria-label="Toggle dark or light theme"
+          >
+            <i class="fas fa-sun" data-theme-icon></i>
+          </button>
+          <a
+            href="contact.html"
+            class="hidden md:inline-block btn-primary px-5 py-2 rounded-full text-sm font-medium"
+            >Hire Me</a
+          >
+          <button
+            onclick="toggleMobileNav()"
+            class="md:hidden theme-toggle"
+            aria-label="Toggle navigation menu"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+      <div
+        id="mobileNav"
+        class="hidden md:hidden border-t border-white/5 px-6 py-4 flex flex-col gap-4"
+      >
+        <a href="index.html" class="nav-link text-sm font-medium">Home</a>
+        <a href="projects.html" class="nav-link text-sm font-medium active"
+          >Projects</a
+        >
+        <a href="about.html" class="nav-link text-sm font-medium">About</a>
+        <a href="contact.html" class="nav-link text-sm font-medium">Contact</a>
+      </div>
+    </header>
+
+    <!-- ==================== PAGE HEADER ==================== -->
+    <section class="hero-gradient pt-36 pb-16">
+      <div class="container mx-auto px-6 text-center reveal">
+        <span class="text-blue-400 text-sm font-medium uppercase tracking-wider"
+          >Portfolio</span
+        >
+        <h1 class="text-4xl md:text-6xl font-extrabold mt-2 mb-4">
+          All <span class="gradient-text">Projects</span>
+        </h1>
+        <p class="text-body max-w-xl mx-auto">
+          A collection of everything I've shipped — big platforms, small
+          experiments, and everything in between.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== FILTER + SEARCH ==================== -->
+    <!-- ==================== FILTER + SEARCH ==================== -->
+<section class="container mx-auto px-6 pb-8">
+  <!-- Filter Chips -->
+  <div class="flex justify-center mb-6 reveal">
+    <div id="filterChips" class="flex flex-wrap gap-2 justify-center"></div>
+  </div>
+  
+  <!-- Search Bar -->
+  <div class="flex justify-center reveal">
+    <div class="relative w-full max-w-md">
+      <i
+        class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-muted text-sm"
+      ></i>
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search projects..."
+        class="w-full glass-card rounded-full pl-10 pr-4 py-3 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-blue-400/50"
+        style="color: var(--text); background: var(--bg-soft); border: 1px solid var(--card-border);"
+        aria-label="Search projects"
+      />
+    </div>
+  </div>
+  <!-- Results Count -->
+  <p id="resultsCount" class="text-muted text-sm text-center mt-4"></p>
+</section>
+    <!-- ==================== PROJECTS GRID ==================== -->
+    <section class="container mx-auto px-6 pb-10">
+      <div
+        id="projectsGrid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      ></div>
+      <p id="emptyState" class="hidden text-center text-muted py-20">
+        <i class="fas fa-folder-open text-4xl mb-4 block"></i>
+        No projects match your search.
+      </p>
+      <div class="text-center mt-12">
+        <button
+          id="loadMoreBtn"
+          onclick="loadMore()"
+          class="btn-outline px-8 py-3 rounded-full font-medium hidden"
+        >
+          Load More <i class="fas fa-chevron-down ml-1"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECT MODAL ==================== -->
+    <div
+      id="projectModal"
+      class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+      <div
+        class="relative surface rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto reveal is-visible"
+      >
+        <button
+          onclick="closeModal()"
+          class="absolute top-4 right-4 w-9 h-9 rounded-full glass-card flex items-center justify-center z-10"
+          aria-label="Close"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+        <img
+          id="modalImage"
+          src=""
+          alt=""
+          class="w-full h-64 object-cover rounded-t-3xl"
+        />
+        <div class="p-8">
+          <span id="modalType" class="text-xs text-blue-400 font-medium"></span>
+          <h3 id="modalTitle" class="text-2xl font-bold mt-1 mb-4"></h3>
+          <p
+            id="modalDescription"
+            class="text-body text-sm leading-relaxed mb-6"
+          ></p>
+          <div id="modalTech" class="flex flex-wrap gap-2 mb-6"></div>
+          <div class="flex gap-3">
+            <a
+              id="modalLink"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              class="btn-primary px-6 py-3 rounded-full text-sm font-medium inline-flex items-center gap-2"
+            >
+              <i class="fas fa-external-link-alt"></i> Live Demo
+            </a>
+            <a
+              id="modalGithub"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              class="btn-outline px-6 py-3 rounded-full text-sm font-medium inline-flex items-center gap-2"
+            >
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer
+      class="surface border-t py-12"
+      style="border-color: var(--card-border)"
+    >
+      <div class="container mx-auto px-6">
+        <!-- Social Icons -->
+        <div class="flex justify-center gap-6 mb-6">
+          <!-- LinkedIn -->
+          <a
+            href="https://www.linkedin.com/in/kifane-amel-1b030137b"
+            target="_blank"
+            rel="noopener"
+            class="social-icon text-muted hover:text-blue-400 text-xl"
+            aria-label="LinkedIn"
+            ><i class="fab fa-linkedin-in"></i
+          ></a>
+          <!-- GitHub -->
+          <a
+            href="https://github.com/amelkifane"
+            target="_blank"
+            rel="noopener"
+            class="social-icon text-muted hover:text-white text-xl"
+            aria-label="GitHub"
+            ><i class="fab fa-github"></i
+          ></a>
+          <!-- Email - ينسخ البريد الإلكتروني -->
+          <a
+            href="#"
+            class="social-icon text-muted hover:text-red-400 text-xl"
+            aria-label="Email"
+            onclick="
+              navigator.clipboard
+                .writeText('amelkifane@gmail.com')
+                .then(() => {
+                  if (typeof showToast === 'function')
+                    showToast('📧 Email copied: amelkifane@gmail.com');
+                  else alert('Email: amelkifane@gmail.com');
+                })
+                .catch(() => alert('Email: amelkifane@gmail.com'));
+              return false;
+            "
+            ><i class="fas fa-envelope"></i
+          ></a>
+        </div>
+        <!-- Copyright -->
+        <div class="text-center text-sm text-muted">
+          <p>© <span data-year></span> Amel Kifane. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ==================== BACK TO TOP ==================== -->
+    <button id="backToTop" onclick="scrollToTop()" aria-label="Back to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ==================== TOAST ==================== -->
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+      let allProjects = [];
+      let filtered = [];
+      let activeCategory = "All";
+      let searchTerm = "";
+      let visibleCount = 6;
+      const PAGE_SIZE = 6;
+
+      function projectCard(p) {
+        return `
+          <div class="project-card rounded-2xl reveal is-visible cursor-pointer" onclick="openModal(${p.id})">
+            <div class="relative overflow-hidden rounded-t-2xl h-48">
+              <img src="${p.image}" alt="${p.title}" loading="lazy" class="w-full h-full object-cover">
+              <span class="absolute top-3 left-3 text-xs bg-black/50 backdrop-blur px-3 py-1 rounded-full text-white">${p.category}</span>
+            </div>
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs text-blue-400 font-medium">${p.type}</span>
+              </div>
+              <h3 class="text-lg font-bold mb-2">${p.title}</h3>
+              <p class="text-body text-sm mb-4 line-clamp-2">${p.description}</p>
+              <div class="flex flex-wrap gap-2 mb-2">
+                ${p.technologies
+                  .slice(0, 3)
+                  .map(
+                    (t) =>
+                      `<span class="text-xs bg-white/5 text-body px-3 py-1 rounded-full">${t.trim()}</span>`,
+                  )
+                  .join("")}
+                ${p.technologies.length > 3 ? `<span class="text-xs text-muted">+${p.technologies.length - 3}</span>` : ""}
+              </div>
+              <span class="text-blue-400 hover:text-blue-300 text-sm font-medium inline-flex items-center gap-1 mt-2">Details <i class="fas fa-arrow-right text-xs"></i></span>
+            </div>
+          </div>`;
+      }
+
+      function buildFilters() {
+        const categories = ["All"];
+        document.getElementById("filterChips").innerHTML = categories
+          .map(
+            (c) =>
+              `<button class="filter-chip px-4 py-2 rounded-full text-sm font-medium ${c === activeCategory ? "active" : ""}" data-cat="${c}" onclick="setCategory('${c}')">${c}</button>`,
+          )
+          .join("");
+      }
+
+      function setCategory(cat) {
+        activeCategory = cat;
+        visibleCount = PAGE_SIZE;
+        buildFilters();
+        applyFilters();
+      }
+
+      function applyFilters() {
+        filtered = allProjects.filter((p) => {
+          const matchCat =
+            activeCategory === "All" || p.category === activeCategory;
+          const haystack = (
+            p.title +
+            " " +
+            p.description +
+            " " +
+            p.technologies.join(" ")
+          ).toLowerCase();
+          const matchSearch = haystack.includes(searchTerm.toLowerCase());
+          return matchCat && matchSearch;
+        });
+        render();
+      }
+
+      function render() {
+        const grid = document.getElementById("projectsGrid");
+        const visible = filtered.slice(0, visibleCount);
+        grid.innerHTML = visible.map(projectCard).join("");
+        document
+          .getElementById("emptyState")
+          .classList.toggle("hidden", filtered.length > 0);
+        document.getElementById("resultsCount").textContent =
+          `${filtered.length} project${filtered.length !== 1 ? "s" : ""} found`;
+        document
+          .getElementById("loadMoreBtn")
+          .classList.toggle("hidden", visibleCount >= filtered.length);
+      }
+
+      function loadMore() {
+        visibleCount += PAGE_SIZE;
+        render();
+      }
+
+      function openModal(id) {
+        const p = allProjects.find((x) => x.id === id);
+        if (!p) return;
+        document.getElementById("modalImage").src = p.image;
+        document.getElementById("modalImage").alt = p.title;
+        document.getElementById("modalType").textContent =
+          `${p.category} · ${p.type}`;
+        document.getElementById("modalTitle").textContent = p.title;
+        document.getElementById("modalDescription").textContent =
+          p.longDescription || p.description;
+        document.getElementById("modalTech").innerHTML = p.technologies
+          .map(
+            (t) =>
+              `<span class="text-xs bg-white/5 text-body px-3 py-1 rounded-full">${t.trim()}</span>`,
+          )
+          .join("");
+        const linkEl = document.getElementById("modalLink");
+        const githubEl = document.getElementById("modalGithub");
+        linkEl.href = p.link || "#";
+        linkEl.classList.toggle("hidden", !p.link);
+        githubEl.href = p.github || "#";
+        githubEl.classList.toggle("hidden", !p.github);
+        document.getElementById("projectModal").classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        document.getElementById("projectModal").classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+      document.addEventListener(
+        "keydown",
+        (e) => e.key === "Escape" && closeModal(),
+      );
+
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        searchTerm = e.target.value;
+        visibleCount = PAGE_SIZE;
+        applyFilters();
+      });
+
+      async function init() {
+        const data = await SiteData.load();
+        allProjects = data.projects || [];
+        buildFilters();
+        applyFilters();
+      }
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>
